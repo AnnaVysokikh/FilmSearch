@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">FilmSearch</string>
+    <string name="title">Поиск фильмов</string>
+    <string name="button_details">Детали</string>
+    <string name="button_invite_friend">Пригласить друга</string>
+    <string name="button_favorite">Избранное</string>
+    <string name="exit_title">Выход из приложения</string>
+    <string name="exit_question">Вы уверены что хотите выйти?</string>
+    <string name="no">Нет</string>
+    <string name="later">Позже</string>
+    <string name="yes">Да</string>
+</resources>

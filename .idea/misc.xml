@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/OtusAndroid/FilmSearch/app/src/main/res/drawable/ic_baseline_favorite_24.xml" value="0.159" />
+        <entry key="..\:/OtusAndroid/FilmSearch/app/src/main/res/drawable/ic_baseline_favorite_border_24.xml" value="0.159" />
+        <entry key="..\:/OtusAndroid/FilmSearch/app/src/main/res/layout-land/activity_favorite.xml" value="0.1" />
+        <entry key="..\:/OtusAndroid/FilmSearch/app/src/main/res/layout-land/activity_main.xml" value="0.18" />
+        <entry key="..\:/OtusAndroid/FilmSearch/app/src/main/res/layout/activity_description.xml" value="0.17696629213483145" />
+        <entry key="..\:/OtusAndroid/FilmSearch/app/src/main/res/layout/activity_details.xml" value="0.121875" />
+        <entry key="..\:/OtusAndroid/FilmSearch/app/src/main/res/layout/activity_favorite.xml" value="0.21" />
+        <entry key="..\:/OtusAndroid/FilmSearch/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/OtusAndroid/FilmSearch/app/src/main/res/layout/films.xml" value="0.24547101449275363" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
