@@ -10,4 +10,10 @@
     <string name="no">No</string>
     <string name="later">Later</string>
     <string name="yes">Yes</string>
+    <string name="invitation">An invitation to the cinema</string>
+    <string name="invitation_text">Let is go to the cinema!</string>
+    <string name="add_favorite">Movie added to favorites</string>
+    <string name="del_favorite">The movie was removed from favorites</string>
+    <string name="all_films">All films</string>
+    <string name="exit">Exit</string>
 </resources>

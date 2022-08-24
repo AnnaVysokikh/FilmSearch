@@ -19,13 +19,4 @@
         tools:itemCount="5"
         tools:listitem="@layout/films" />
 
-    <Button
-        android:id="@+id/inFavorite"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="@string/button_favorite"
-        app:layout_anchor="@id/recycler"
-        app:layout_anchorGravity="end|bottom" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout >

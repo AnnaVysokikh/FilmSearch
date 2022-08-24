@@ -9,4 +9,10 @@
     <string name="no">Нет</string>
     <string name="later">Позже</string>
     <string name="yes">Да</string>
+    <string name="invitation">Приглашение в кино</string>
+    <string name="invitation_text">Пошли в кино!</string>
+    <string name="add_favorite">Фильм добавлен в избранное</string>
+    <string name="del_favorite">Фильм удален из избранного</string>
+    <string name="all_films">Все фильмы</string>
+    <string name="exit">Выход</string>
 </resources>

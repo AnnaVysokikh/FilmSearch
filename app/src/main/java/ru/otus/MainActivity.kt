@@ -1,132 +1,79 @@
 package ru.otus
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.activity.result.contract.ActivityResultContracts
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
-    private val recyclerView by lazy { findViewById<RecyclerView>(R.id.recycler) }
-    private val films = mutableListOf(
-        FilmInfo("Холодное сердце", "Комедийное анимационное приключение от студии Disney. Когда древнее предсказание сбывается и королевство погружается в объятья вечной зимы, трое бесстрашных героев — принцесса Анна, отважный Кристофф и его верный олень Свен — отправятся в горы, чтобы найти сестру Анны, которая может снять с королевства леденящее заклятье. По пути их ждет множество увлекательных сюрпризов и захватывающих приключений — встреча с мистическими троллями, знакомство с очаровательным снеговиком по имени Олаф, горные вершины покруче Эвереста и магия в каждой снежинке. Анне и Кристоффу предстоит сплотиться и противостоять могучей стихии, чтобы спасти королевство и тех, кто им дорог!", R.drawable.holod, false),
-        FilmInfo("Золушка", "Волшебная история Золушки от Disney, покорившая многие поколения своей восхитительной музыкой и незабываемыми персонажами! Золушка верит, что когда-нибудь сбудутся все ее мечты. Взмах волшебной палочки доброй феи — и лохмотья девочки превращаются в прекрасное платье, в котором Золушка отправляется на королевский бал, чтобы встретить принца. Но когда часы пробили полночь, чары рассеялись, и наряд Золушки превратился в старые обноски — осталась только хрустальная туфелька... Насладитесь классической сказкой от Disney в кругу семьи, и она навсегда останется в вашем сердце. И помните: мечты действительно сбываются!", R.drawable.zolushka, false),
-        FilmInfo("Холодное сердце 2", "Комедийное анимационное приключение от студии Disney. Когда древнее предсказание сбывается и королевство погружается в объятья вечной зимы, трое бесстрашных героев — принцесса Анна, отважный Кристофф и его верный олень Свен — отправятся в горы, чтобы найти сестру Анны, которая может снять с королевства леденящее заклятье. По пути их ждет множество увлекательных сюрпризов и захватывающих приключений — встреча с мистическими троллями, знакомство с очаровательным снеговиком по имени Олаф, горные вершины покруче Эвереста и магия в каждой снежинке. Анне и Кристоффу предстоит сплотиться и противостоять могучей стихии, чтобы спасти королевство и тех, кто им дорог!", R.drawable.holod, false),
-        FilmInfo("Золушка 2", "Волшебная история Золушки от Disney, покорившая многие поколения своей восхитительной музыкой и незабываемыми персонажами! Золушка верит, что когда-нибудь сбудутся все ее мечты. Взмах волшебной палочки доброй феи — и лохмотья девочки превращаются в прекрасное платье, в котором Золушка отправляется на королевский бал, чтобы встретить принца. Но когда часы пробили полночь, чары рассеялись, и наряд Золушки превратился в старые обноски — осталась только хрустальная туфелька... Насладитесь классической сказкой от Disney в кругу семьи, и она навсегда останется в вашем сердце. И помните: мечты действительно сбываются!", R.drawable.zolushka, false),
-        FilmInfo("Холодное сердце 3", "Комедийное анимационное приключение от студии Disney. Когда древнее предсказание сбывается и королевство погружается в объятья вечной зимы, трое бесстрашных героев — принцесса Анна, отважный Кристофф и его верный олень Свен — отправятся в горы, чтобы найти сестру Анны, которая может снять с королевства леденящее заклятье. По пути их ждет множество увлекательных сюрпризов и захватывающих приключений — встреча с мистическими троллями, знакомство с очаровательным снеговиком по имени Олаф, горные вершины покруче Эвереста и магия в каждой снежинке. Анне и Кристоффу предстоит сплотиться и противостоять могучей стихии, чтобы спасти королевство и тех, кто им дорог!", R.drawable.holod, false),
-        FilmInfo("Золушка 3", "Волшебная история Золушки от Disney, покорившая многие поколения своей восхитительной музыкой и незабываемыми персонажами! Золушка верит, что когда-нибудь сбудутся все ее мечты. Взмах волшебной палочки доброй феи — и лохмотья девочки превращаются в прекрасное платье, в котором Золушка отправляется на королевский бал, чтобы встретить принца. Но когда часы пробили полночь, чары рассеялись, и наряд Золушки превратился в старые обноски — осталась только хрустальная туфелька... Насладитесь классической сказкой от Disney в кругу семьи, и она навсегда останется в вашем сердце. И помните: мечты действительно сбываются!", R.drawable.zolushka, false),
-        FilmInfo("Холодное сердце 4", "Комедийное анимационное приключение от студии Disney. Когда древнее предсказание сбывается и королевство погружается в объятья вечной зимы, трое бесстрашных героев — принцесса Анна, отважный Кристофф и его верный олень Свен — отправятся в горы, чтобы найти сестру Анны, которая может снять с королевства леденящее заклятье. По пути их ждет множество увлекательных сюрпризов и захватывающих приключений — встреча с мистическими троллями, знакомство с очаровательным снеговиком по имени Олаф, горные вершины покруче Эвереста и магия в каждой снежинке. Анне и Кристоффу предстоит сплотиться и противостоять могучей стихии, чтобы спасти королевство и тех, кто им дорог!", R.drawable.holod, false),
-        FilmInfo("Золушка 4", "Волшебная история Золушки от Disney, покорившая многие поколения своей восхитительной музыкой и незабываемыми персонажами! Золушка верит, что когда-нибудь сбудутся все ее мечты. Взмах волшебной палочки доброй феи — и лохмотья девочки превращаются в прекрасное платье, в котором Золушка отправляется на королевский бал, чтобы встретить принца. Но когда часы пробили полночь, чары рассеялись, и наряд Золушки превратился в старые обноски — осталась только хрустальная туфелька... Насладитесь классической сказкой от Disney в кругу семьи, и она навсегда останется в вашем сердце. И помните: мечты действительно сбываются!", R.drawable.zolushka, false),
-        FilmInfo("Холодное сердце 5", "Комедийное анимационное приключение от студии Disney. Когда древнее предсказание сбывается и королевство погружается в объятья вечной зимы, трое бесстрашных героев — принцесса Анна, отважный Кристофф и его верный олень Свен — отправятся в горы, чтобы найти сестру Анны, которая может снять с королевства леденящее заклятье. По пути их ждет множество увлекательных сюрпризов и захватывающих приключений — встреча с мистическими троллями, знакомство с очаровательным снеговиком по имени Олаф, горные вершины покруче Эвереста и магия в каждой снежинке. Анне и Кристоффу предстоит сплотиться и противостоять могучей стихии, чтобы спасти королевство и тех, кто им дорог!", R.drawable.holod, false),
-        FilmInfo("Золушка 5", "Волшебная история Золушки от Disney, покорившая многие поколения своей восхитительной музыкой и незабываемыми персонажами! Золушка верит, что когда-нибудь сбудутся все ее мечты. Взмах волшебной палочки доброй феи — и лохмотья девочки превращаются в прекрасное платье, в котором Золушка отправляется на королевский бал, чтобы встретить принца. Но когда часы пробили полночь, чары рассеялись, и наряд Золушки превратился в старые обноски — осталась только хрустальная туфелька... Насладитесь классической сказкой от Disney в кругу семьи, и она навсегда останется в вашем сердце. И помните: мечты действительно сбываются!", R.drawable.zolushka, false),
-        FilmInfo("Холодное сердце 6", "Комедийное анимационное приключение от студии Disney. Когда древнее предсказание сбывается и королевство погружается в объятья вечной зимы, трое бесстрашных героев — принцесса Анна, отважный Кристофф и его верный олень Свен — отправятся в горы, чтобы найти сестру Анны, которая может снять с королевства леденящее заклятье. По пути их ждет множество увлекательных сюрпризов и захватывающих приключений — встреча с мистическими троллями, знакомство с очаровательным снеговиком по имени Олаф, горные вершины покруче Эвереста и магия в каждой снежинке. Анне и Кристоффу предстоит сплотиться и противостоять могучей стихии, чтобы спасти королевство и тех, кто им дорог!", R.drawable.holod, false),
-        FilmInfo("Золушка 6", "Волшебная история Золушки от Disney, покорившая многие поколения своей восхитительной музыкой и незабываемыми персонажами! Золушка верит, что когда-нибудь сбудутся все ее мечты. Взмах волшебной палочки доброй феи — и лохмотья девочки превращаются в прекрасное платье, в котором Золушка отправляется на королевский бал, чтобы встретить принца. Но когда часы пробили полночь, чары рассеялись, и наряд Золушки превратился в старые обноски — осталась только хрустальная туфелька... Насладитесь классической сказкой от Disney в кругу семьи, и она навсегда останется в вашем сердце. И помните: мечты действительно сбываются!", R.drawable.zolushka, false),
-        FilmInfo("Холодное сердце 7", "Комедийное анимационное приключение от студии Disney. Когда древнее предсказание сбывается и королевство погружается в объятья вечной зимы, трое бесстрашных героев — принцесса Анна, отважный Кристофф и его верный олень Свен — отправятся в горы, чтобы найти сестру Анны, которая может снять с королевства леденящее заклятье. По пути их ждет множество увлекательных сюрпризов и захватывающих приключений — встреча с мистическими троллями, знакомство с очаровательным снеговиком по имени Олаф, горные вершины покруче Эвереста и магия в каждой снежинке. Анне и Кристоффу предстоит сплотиться и противостоять могучей стихии, чтобы спасти королевство и тех, кто им дорог!", R.drawable.holod, false),
-        FilmInfo("Золушка 7", "Волшебная история Золушки от Disney, покорившая многие поколения своей восхитительной музыкой и незабываемыми персонажами! Золушка верит, что когда-нибудь сбудутся все ее мечты. Взмах волшебной палочки доброй феи — и лохмотья девочки превращаются в прекрасное платье, в котором Золушка отправляется на королевский бал, чтобы встретить принца. Но когда часы пробили полночь, чары рассеялись, и наряд Золушки превратился в старые обноски — осталась только хрустальная туфелька... Насладитесь классической сказкой от Disney в кругу семьи, и она навсегда останется в вашем сердце. И помните: мечты действительно сбываются!", R.drawable.zolushka, false),
-        FilmInfo("Холодное сердце 8", "Комедийное анимационное приключение от студии Disney. Когда древнее предсказание сбывается и королевство погружается в объятья вечной зимы, трое бесстрашных героев — принцесса Анна, отважный Кристофф и его верный олень Свен — отправятся в горы, чтобы найти сестру Анны, которая может снять с королевства леденящее заклятье. По пути их ждет множество увлекательных сюрпризов и захватывающих приключений — встреча с мистическими троллями, знакомство с очаровательным снеговиком по имени Олаф, горные вершины покруче Эвереста и магия в каждой снежинке. Анне и Кристоффу предстоит сплотиться и противостоять могучей стихии, чтобы спасти королевство и тех, кто им дорог!", R.drawable.holod, false),
-        FilmInfo("Золушка 8", "Волшебная история Золушки от Disney, покорившая многие поколения своей восхитительной музыкой и незабываемыми персонажами! Золушка верит, что когда-нибудь сбудутся все ее мечты. Взмах волшебной палочки доброй феи — и лохмотья девочки превращаются в прекрасное платье, в котором Золушка отправляется на королевский бал, чтобы встретить принца. Но когда часы пробили полночь, чары рассеялись, и наряд Золушки превратился в старые обноски — осталась только хрустальная туфелька... Насладитесь классической сказкой от Disney в кругу семьи, и она навсегда останется в вашем сердце. И помните: мечты действительно сбываются!", R.drawable.zolushka, false),
-    )
-    private var favoriteFilms = ArrayList<FilmInfo>()
-    private var refreshFavoriteFilms = ArrayList<FilmInfo>()
+    private lateinit var filmsFragment: FilmsFragment
+    private lateinit var favoritesFragment: FavoriteFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        initRecycler()
-        initClickListeners()
+        openAllFilms(savedInstanceState)
+
+        val navigation: BottomNavigationView = findViewById(R.id.bottomNavigation)
+        navigation.setOnItemSelectedListener {
+             when (it.itemId) {
+                 R.id.all_films -> {
+                     Toast.makeText(this, "all_films", Toast.LENGTH_SHORT).show()
+                    openAllFilms(savedInstanceState)
+                 }
+                 R.id.favorites -> {
+                     Toast.makeText(this, "favorites", Toast.LENGTH_SHORT).show()
+                    openFavoriteFilms(savedInstanceState)
+                 }
+                 R.id.exit -> {
+                     openExitDialog()
+                 }
+             }
+             true
+         }
+        navigation.setOnNavigationItemReselectedListener { true }
     }
 
-    private fun initClickListeners() {
-        val startAnotherActivity = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) { result ->
-            val data = result.data
-            if (result.resultCode == RESULT_OK && data != null) {
-                refreshFavoriteFilms = data.getSerializableExtra("refreshFavoriteFilms") as ArrayList<FilmInfo>
-                var isFavoriteChange = data.getBooleanExtra("isFavoriteChange", false)
-                var index = -1
-                var indexFavorite = -1
-                if (isFavoriteChange) {
-                    for (item in refreshFavoriteFilms){
-                        indexFavorite = favoriteFilms.indexOf(item)
-                        if (indexFavorite != -1){
-                            favoriteFilms.removeAt(indexFavorite)
-                        }
-                        index = films.indexOf(item)
-                        if (index != -1){
-                            films[index].isFavorite = false
-                            recyclerView.adapter?.notifyItemChanged(index)
-                        }
-
-                    }
-                }}
-            }
-        findViewById<View>(R.id.inFavorite).setOnClickListener {
-            val intent = Intent(this@MainActivity, Favorite::class.java)
-            intent.putExtra("favorite", favoriteFilms)
-            startAnotherActivity.launch(intent)
+    private fun openAllFilms(savedInstanceState: Bundle?) {
+        if (savedInstanceState == null) {
+            filmsFragment = FilmsFragment()
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, filmsFragment, FILMS)
+                .commit()
+        } else {
+            filmsFragment = supportFragmentManager.findFragmentByTag(FILMS) as FilmsFragment
         }
-    }
+     }
 
-
-
-    private fun initRecycler() {
-        val layoutManager = LinearLayoutManager(this)
-        recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = FilmsAdapter(films, object : FilmsAdapter.FilmsClickListener {
-
-            override fun onFavoriteClick(film: FilmInfo, position: Int) {
-
-                if (films[position].isFavorite) {
-                    films[position].isFavorite = false
-                    favoriteFilms.remove(film)
-                    recyclerView.adapter?.notifyItemChanged(position)
-                }
-                else {
-                    films[position].isFavorite = true
-                    favoriteFilms.add(film)
-                    recyclerView.adapter?.notifyItemChanged(position)
-                }
+    private fun openFavoriteFilms(savedInstanceState: Bundle?) {
+        if (savedInstanceState == null) {
+            if (filmsFragment.favoriteFilms != null) {
+                favoritesFragment = FavoriteFragment.create(filmsFragment.films as ArrayList<FilmInfo>)
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, favoritesFragment, FAVORITE_FILMS)
+                    .addToBackStack(null)
+                    .commit()
             }
-
-            override fun onDetailsClick(film: FilmInfo, position: Int) {
-                val intent = Intent(this@MainActivity, DescriptionActivity::class.java)
-                intent.putExtra("film", film)
-                startActivity(intent)
-            }
-        })
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putSerializable("favoriteFilms", favoriteFilms)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        favoriteFilms = savedInstanceState?.getSerializable("favoriteFilms") as ArrayList<FilmInfo>
-        var index = -1
-        for (item in favoriteFilms){
-            item.isFavorite = false
         }
-        for (item in favoriteFilms){
-            index = films.indexOf(item)
-            if (index != -1){
-                item.isFavorite = true
-                favoriteFilms[index].isFavorite = true
-                recyclerView.adapter?.notifyItemChanged(index)
-            }
-
+        else {
+            favoritesFragment = supportFragmentManager.findFragmentByTag(FAVORITE_FILMS) as FavoriteFragment
         }
     }
 
     override fun onBackPressed() {
+
+       if (supportFragmentManager.backStackEntryCount > 0) {
+           supportFragmentManager.popBackStack()
+       } else {
+           openExitDialog()
+       }
+    }
+
+    private fun openExitDialog()
+    {
         AlertDialog.Builder(this)
             .setTitle(R.string.exit_title)
             .setMessage(R.string.exit_question)
@@ -137,4 +84,8 @@ class MainActivity : AppCompatActivity() {
             .show()
     }
 
+    companion object {
+         const val FAVORITE_FILMS = "films_favorite"
+         const val FILMS = "fragment_films"
+    }
 }
