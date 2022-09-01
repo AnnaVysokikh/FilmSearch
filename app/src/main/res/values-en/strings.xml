@@ -16,4 +16,7 @@
     <string name="del_favorite">The movie was removed from favorites</string>
     <string name="all_films">All films</string>
     <string name="exit">Exit</string>
+    <string name="try_again">Repeat</string>
+    <string name="load_error">Failed to get films</string>
+    <string name="cancel">Cancel</string>
 </resources>

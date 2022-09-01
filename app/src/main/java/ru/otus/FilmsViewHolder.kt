@@ -5,29 +5,45 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import ru.otus.model.FilmModel
 
 class FilmsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
     private val nameTv: TextView = itemView.findViewById(R.id.name_film)
     private val imageIv: ImageView = itemView.findViewById(R.id.image_film)
     private var favoriteIv: ImageView = itemView.findViewById(R.id.favorite_film)
     private val btn: Button = itemView.findViewById(R.id.detali)
+    var filmID: Int = 0
 
-    fun bind(item:FilmInfo, listener: FilmsAdapter.FilmsClickListener) {
+    fun bind(item: FilmModel
+             ,onDetailsClick: (position: Int) -> Unit
+             ,onFavoriteClick: (position: Int) -> Unit
+    ) {
+        filmID = item.id
         nameTv.text = item.name
-        imageIv.setImageResource(item.resId)
 
-        if (item.isFavorite) {
+        Glide.with(imageIv.context)
+            .load(item.poster)
+            .timeout(10000)
+            .placeholder(R.drawable.ic_baseline_image_24)
+            .error(com.google.android.material.R.drawable.mtrl_ic_error)
+            .centerCrop()
+            .into(imageIv)
+
+        btn.setOnClickListener {
+            onDetailsClick(item.id)
+        }
+
+        favoriteIv.setOnClickListener {
+            onFavoriteClick(item.id)
+        }
+
+        if (item.isFavorite == true) {
             favoriteIv.setImageResource(R.drawable.ic_baseline_favorite_24)
         } else {
             favoriteIv.setImageResource(R.drawable.ic_baseline_favorite_border_24)
         }
 
-        favoriteIv.setOnClickListener {
-            listener.onFavoriteClick(item, adapterPosition)
-        }
-        btn.setOnClickListener{
-            listener.onDetailsClick(item, adapterPosition)
-        }
     }
 
 }

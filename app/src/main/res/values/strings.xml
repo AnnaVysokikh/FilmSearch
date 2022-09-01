@@ -15,4 +15,7 @@
     <string name="del_favorite">Фильм удален из избранного</string>
     <string name="all_films">Все фильмы</string>
     <string name="exit">Выход</string>
+    <string name="try_again">Повторить</string>
+    <string name="load_error">Не удалось загрузить фильмы</string>
+    <string name="cancel">Отмена</string>
 </resources>

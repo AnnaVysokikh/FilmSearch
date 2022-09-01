@@ -2,90 +2,104 @@ package ru.otus
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import ru.otus.repositoty.FilmsRepository
+import ru.otus.view.DescriptionFragment
+import ru.otus.view.FavoriteFragment
+import ru.otus.view.FilmsFragment
+import ru.otus.viewmodel.FilmsViewModel
+import ru.otus.viewmodel.FilmsViewModelFactory
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var filmsFragment: FilmsFragment
-    private lateinit var favoritesFragment: FavoriteFragment
+    private lateinit var viewModel: FilmsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        openAllFilms(savedInstanceState)
+        viewModel = ViewModelProvider(this, FilmsViewModelFactory(FilmsRepository()))[FilmsViewModel::class.java]
 
         val navigation: BottomNavigationView = findViewById(R.id.bottomNavigation)
         navigation.setOnItemSelectedListener {
-             when (it.itemId) {
-                 R.id.all_films -> {
-                     Toast.makeText(this, "all_films", Toast.LENGTH_SHORT).show()
+            when (it.itemId) {
+                R.id.all_films -> {
                     openAllFilms(savedInstanceState)
-                 }
-                 R.id.favorites -> {
-                     Toast.makeText(this, "favorites", Toast.LENGTH_SHORT).show()
+                }
+                R.id.favorites -> {
                     openFavoriteFilms(savedInstanceState)
-                 }
-                 R.id.exit -> {
-                     openExitDialog()
-                 }
-             }
-             true
-         }
+                }
+                R.id.exit -> {
+                    openExitDialog()
+                }
+            }
+            true
+        }
         navigation.setOnNavigationItemReselectedListener { true }
+
+        when (viewModel.fragmentName) {
+            FILMS -> openAllFilms(savedInstanceState)
+            FAVORITE_FILMS -> openFavoriteFilms(savedInstanceState)
+            DETAILS -> viewModel.selectedFilm.value?.id?.let { openDetails() }
+        }
     }
 
-    private fun openAllFilms(savedInstanceState: Bundle?) {
+    fun openAllFilms(savedInstanceState: Bundle?) {
+        viewModel.fragmentName = FILMS
         if (savedInstanceState == null) {
-            filmsFragment = FilmsFragment()
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, filmsFragment, FILMS)
+                .replace(R.id.fragment_container, FilmsFragment(), FILMS)
                 .commit()
         } else {
-            filmsFragment = supportFragmentManager.findFragmentByTag(FILMS) as FilmsFragment
+            val filmsFragment = supportFragmentManager.findFragmentByTag(FILMS)?: FilmsFragment()
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, filmsFragment)
+                .commit()
         }
-     }
+    }
 
     private fun openFavoriteFilms(savedInstanceState: Bundle?) {
+        viewModel.fragmentName = FAVORITE_FILMS
         if (savedInstanceState == null) {
-            if (filmsFragment.favoriteFilms != null) {
-                favoritesFragment = FavoriteFragment.create(filmsFragment.films as ArrayList<FilmInfo>)
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, favoritesFragment, FAVORITE_FILMS)
-                    .addToBackStack(null)
-                    .commit()
-            }
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, FavoriteFragment(), FAVORITE_FILMS)
+                .addToBackStack(null)
+                .commit()
         }
         else {
-            favoritesFragment = supportFragmentManager.findFragmentByTag(FAVORITE_FILMS) as FavoriteFragment
+            val favoritesFragment = supportFragmentManager.findFragmentByTag(FAVORITE_FILMS)?: FavoriteFragment()
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, favoritesFragment)
+                .commit()
         }
+    }
+
+    fun openDetails() {
+        viewModel.fragmentName = DETAILS
+        supportFragmentManager.beginTransaction()
+            .add(R.id.fragment_container, DescriptionFragment(), DETAILS)
+            .addToBackStack(DETAILS)
+            .commit()
     }
 
     override fun onBackPressed() {
 
-       if (supportFragmentManager.backStackEntryCount > 0) {
-           supportFragmentManager.popBackStack()
-       } else {
-           openExitDialog()
-       }
+        if (supportFragmentManager.backStackEntryCount > 0) {
+            supportFragmentManager.popBackStack()
+        } else {
+            openExitDialog()
+        }
     }
 
     private fun openExitDialog()
     {
-        AlertDialog.Builder(this)
-            .setTitle(R.string.exit_title)
-            .setMessage(R.string.exit_question)
-            .setNegativeButton(R.string.no) { dialog, which -> }
-            .setNeutralButton(R.string.later) { dialog, which -> }
-            .setPositiveButton(R.string.yes) { dialog, which -> super.onBackPressed() }
-            .create()
-            .show()
+        CloseDialog().show(supportFragmentManager, "closeDialog")
     }
 
     companion object {
-         const val FAVORITE_FILMS = "films_favorite"
-         const val FILMS = "fragment_films"
+        const val FAVORITE_FILMS = "films_favorite"
+        const val FILMS = "fragment_films"
+        const val DETAILS = "fragment_details"
     }
+
 }

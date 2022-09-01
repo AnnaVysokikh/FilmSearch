@@ -3,8 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/OtusAndroid/FilmSearch/app/src/main/res/drawable/ic_baseline_exit_to_app_24.xml" value="0.146" />
         <entry key="..\:/OtusAndroid/FilmSearch/app/src/main/res/drawable/ic_baseline_favorite_24.xml" value="0.159" />
         <entry key="..\:/OtusAndroid/FilmSearch/app/src/main/res/drawable/ic_baseline_favorite_border_24.xml" value="0.159" />
+        <entry key="..\:/OtusAndroid/FilmSearch/app/src/main/res/drawable/ic_baseline_image_24.xml" value="0.146" />
         <entry key="..\:/OtusAndroid/FilmSearch/app/src/main/res/layout-land/Fragment_films.xml" value="0.1" />
         <entry key="..\:/OtusAndroid/FilmSearch/app/src/main/res/layout-land/activity_favorite.xml" value="0.1" />
         <entry key="..\:/OtusAndroid/FilmSearch/app/src/main/res/layout-land/activity_main.xml" value="0.18" />
@@ -14,6 +16,7 @@
         <entry key="..\:/OtusAndroid/FilmSearch/app/src/main/res/layout/activity_details.xml" value="0.121875" />
         <entry key="..\:/OtusAndroid/FilmSearch/app/src/main/res/layout/activity_favorite.xml" value="0.21" />
         <entry key="..\:/OtusAndroid/FilmSearch/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/OtusAndroid/FilmSearch/app/src/main/res/layout/default_load.xml" value="0.1" />
         <entry key="..\:/OtusAndroid/FilmSearch/app/src/main/res/layout/films.xml" value="0.24547101449275363" />
         <entry key="..\:/OtusAndroid/FilmSearch/app/src/main/res/layout/fragment_description.xml" value="0.1" />
         <entry key="..\:/OtusAndroid/FilmSearch/app/src/main/res/layout/fragment_favorite.xml" value="0.11854103343465046" />
