@@ -59,7 +59,8 @@ class FilmsRepository() {
                     model.name,
                     model.poster,
                     model.description?:"",
-                    model.isFavorite?: false
+                    model.isFavorite?: false,
+                    model.watchLater?: -1
                 ))
             }
         return@withContext DBList
@@ -77,7 +78,8 @@ class FilmsRepository() {
                     model.name,
                     model.poster,
                     model.description?:"",
-                    model.isFavorite?: false
+                    model.isFavorite?: false,
+                    model.watchLater?: -1
                 ))
             }
 

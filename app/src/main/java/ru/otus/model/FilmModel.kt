@@ -1,5 +1,6 @@
 package ru.otus.model
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
@@ -30,4 +31,6 @@ data class FilmModel (
     var description: String? = "",
     @Expose
     var isFavorite: Boolean? = false,
+    @Expose
+    var watchLater: Long? = -1
 )

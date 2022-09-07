@@ -2,8 +2,11 @@ package ru.otus
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.messaging.FirebaseMessaging
 import ru.otus.repositoty.FilmsRepository
 import ru.otus.view.DescriptionFragment
 import ru.otus.view.FavoriteFragment
@@ -11,7 +14,7 @@ import ru.otus.view.FilmsFragment
 import ru.otus.viewmodel.FilmsViewModel
 import ru.otus.viewmodel.FilmsViewModelFactory
 
-class MainActivity : AppCompatActivity() {
+open class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: FilmsViewModel
 
@@ -19,6 +22,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         viewModel = ViewModelProvider(this, FilmsViewModelFactory(FilmsRepository()))[FilmsViewModel::class.java]
+
+        initFirebaseToken()
 
         val navigation: BottomNavigationView = findViewById(R.id.bottomNavigation)
         navigation.setOnItemSelectedListener {
@@ -36,6 +41,18 @@ class MainActivity : AppCompatActivity() {
             true
         }
         navigation.setOnNavigationItemReselectedListener { true }
+
+        if ((intent.action == NOTIFICATION_RECEIVER_ACTION ||
+                intent.getStringExtra("action") == "startDetails")
+        && savedInstanceState == null)    {
+            openAllFilms(savedInstanceState)
+            viewModel.fragmentName = DETAILS
+            var id = intent.getIntExtra(DescriptionFragment.EXTRA_FILM_ID, 0)
+            if (id == 0)
+                id = intent.getStringExtra(DescriptionFragment.EXTRA_FILM_ID)?.toInt()!!
+            viewModel.setSelectedFilm(id)
+            //viewModel.setSelectedFilm(intent.getStringExtra(DescriptionFragment.EXTRA_FILM_ID)?.toInt())
+        }
 
         when (viewModel.fragmentName) {
             FILMS -> openAllFilms(savedInstanceState)
@@ -96,10 +113,24 @@ class MainActivity : AppCompatActivity() {
         CloseDialog().show(supportFragmentManager, "closeDialog")
     }
 
+    private fun initFirebaseToken(){
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.d("__OTUS__", "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val token = task.result
+            Log.d("__OTUS__", "token = $token")
+        })
+    }
+
     companion object {
         const val FAVORITE_FILMS = "films_favorite"
         const val FILMS = "fragment_films"
         const val DETAILS = "fragment_details"
+        const val NOTIFICATION_RECEIVER_ACTION = "NotificationReceiverAction"
     }
 
 }

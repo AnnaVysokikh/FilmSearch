@@ -51,6 +51,7 @@ class App : Application() {
     companion object {
         const val KINOPOISK_URL = "https://kinopoiskapiunofficial.tech"
         const val TOKEN = "8c954462-41eb-4ae2-b22d-d48728ec769a"
+        const val NOTIFICATION_CHANNEL_ID = "232323"
 
         lateinit var instance: App
             private set

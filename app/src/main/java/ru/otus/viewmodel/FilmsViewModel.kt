@@ -1,11 +1,7 @@
 package ru.otus.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import androidx.paging.*
-import com.google.android.material.snackbar.Snackbar
 import ru.otus.repositoty.FilmsRepository
 import ru.otus.MainActivity.Companion.FILMS
 import ru.otus.model.FilmModel
@@ -13,7 +9,7 @@ import ru.otus.repositoty.FilmPages
 import ru.otus.repositoty.FilmsPageLoader
 
 class FilmsViewModel (
-    private val filmsRepository: FilmsRepository
+    val filmsRepository: FilmsRepository,
     ) : ViewModel(){
 
     var fragmentName: String = FILMS
@@ -68,6 +64,11 @@ class FilmsViewModel (
         filmsRepository.getFilm(id) { mSelectedFilm.value = it }
     }
 
+    fun setSelectedFilm(id: Int?){
+        if (id != null){
+            filmsRepository.getFilm(id){mSelectedFilm.value = filmsRepository.getFilmFromDB(id)}
+        }
+    }
     fun onFavoriteChanged(id: Int){
         val changingFilm = filmsRepository.getFilmFromDB(id)
         if (changingFilm?.isFavorite != null) {

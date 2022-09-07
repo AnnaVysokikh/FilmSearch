@@ -7,6 +7,7 @@
         <entry key="..\:/OtusAndroid/FilmSearch/app/src/main/res/drawable/ic_baseline_favorite_24.xml" value="0.159" />
         <entry key="..\:/OtusAndroid/FilmSearch/app/src/main/res/drawable/ic_baseline_favorite_border_24.xml" value="0.159" />
         <entry key="..\:/OtusAndroid/FilmSearch/app/src/main/res/drawable/ic_baseline_image_24.xml" value="0.146" />
+        <entry key="..\:/OtusAndroid/FilmSearch/app/src/main/res/drawable/ic_baseline_watch_later_24.xml" value="0.1575" />
         <entry key="..\:/OtusAndroid/FilmSearch/app/src/main/res/layout-land/Fragment_films.xml" value="0.1" />
         <entry key="..\:/OtusAndroid/FilmSearch/app/src/main/res/layout-land/activity_favorite.xml" value="0.1" />
         <entry key="..\:/OtusAndroid/FilmSearch/app/src/main/res/layout-land/activity_main.xml" value="0.18" />
@@ -18,15 +19,16 @@
         <entry key="..\:/OtusAndroid/FilmSearch/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/OtusAndroid/FilmSearch/app/src/main/res/layout/default_load.xml" value="0.1" />
         <entry key="..\:/OtusAndroid/FilmSearch/app/src/main/res/layout/films.xml" value="0.24547101449275363" />
-        <entry key="..\:/OtusAndroid/FilmSearch/app/src/main/res/layout/fragment_description.xml" value="0.1" />
+        <entry key="..\:/OtusAndroid/FilmSearch/app/src/main/res/layout/fragment_description.xml" value="0.1877637130801688" />
         <entry key="..\:/OtusAndroid/FilmSearch/app/src/main/res/layout/fragment_favorite.xml" value="0.11854103343465046" />
         <entry key="..\:/OtusAndroid/FilmSearch/app/src/main/res/layout/fragment_films.xml" value="0.1" />
         <entry key="..\:/OtusAndroid/FilmSearch/app/src/main/res/layout/fragment_main.xml" value="0.1" />
+        <entry key="..\:/OtusAndroid/FilmSearch/app/src/main/res/layout/remind_later.xml" value="0.22" />
         <entry key="..\:/OtusAndroid/FilmSearch/app/src/main/res/menu/navigation_items.xml" value="0.1" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

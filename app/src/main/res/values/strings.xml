@@ -18,4 +18,10 @@
     <string name="try_again">Повторить</string>
     <string name="load_error">Не удалось загрузить фильмы</string>
     <string name="cancel">Отмена</string>
+    <string name="set">Задать</string>
+    <string name="watch_later">Посмотреть позже</string>
+    <string name="bad_watch_later">Задайте другие дата/время</string>
+    <string name="watch_later_notification">Посмотри фильм \"%s\"</string>
+    <string name="open_film">Открыть фильмы</string>
+    <string name="notification_title">Напоминание</string>
 </resources>

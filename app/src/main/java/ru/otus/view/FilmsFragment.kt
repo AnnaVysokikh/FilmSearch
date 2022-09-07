@@ -1,5 +1,6 @@
 package ru.otus.view
 
+
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -130,11 +131,11 @@ open class FilmsFragment : Fragment() {
 
     open fun onFavoriteClick(id: Int){
         viewModel.onFavoriteChanged(id)
-        var message = if (viewModel.selectedFilm.value?.isFavorite ==true) R.string.add_favorite else R.string.del_favorite
+        var message = if (viewModel.selectedFilm.value?.isFavorite ==true) R.string.add_favorite
+            else R.string.del_favorite
         Snackbar.make(binding.root,message, Snackbar.LENGTH_SHORT)
             .setAction(R.string.cancel) { viewModel.onFavoriteChanged(id) }
             .setAnimationMode(Snackbar.ANIMATION_MODE_FADE)
             .show()
-        viewModel.selectedFilm.value?.isFavorite
     }
 }

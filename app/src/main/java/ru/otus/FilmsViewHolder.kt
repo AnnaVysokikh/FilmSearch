@@ -11,8 +11,8 @@ import ru.otus.model.FilmModel
 class FilmsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
     private val nameTv: TextView = itemView.findViewById(R.id.name_film)
     private val imageIv: ImageView = itemView.findViewById(R.id.image_film)
-    private var favoriteIv: ImageView = itemView.findViewById(R.id.favorite_film)
-    private val btn: Button = itemView.findViewById(R.id.detali)
+    private var btnfavorite: ImageView = itemView.findViewById(R.id.favorite_film)
+    private val btnDetali: Button = itemView.findViewById(R.id.detali)
     var filmID: Int = 0
 
     fun bind(item: FilmModel
@@ -30,20 +30,19 @@ class FilmsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
             .centerCrop()
             .into(imageIv)
 
-        btn.setOnClickListener {
+        btnDetali.setOnClickListener {
             onDetailsClick(item.id)
         }
 
-        favoriteIv.setOnClickListener {
+        btnfavorite.setOnClickListener {
             onFavoriteClick(item.id)
         }
 
         if (item.isFavorite == true) {
-            favoriteIv.setImageResource(R.drawable.ic_baseline_favorite_24)
+            btnfavorite.setImageResource(R.drawable.ic_baseline_favorite_24)
         } else {
-            favoriteIv.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+            btnfavorite.setImageResource(R.drawable.ic_baseline_favorite_border_24)
         }
-
     }
 
 }

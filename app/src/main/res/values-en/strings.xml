@@ -19,4 +19,10 @@
     <string name="try_again">Repeat</string>
     <string name="load_error">Failed to get films</string>
     <string name="cancel">Cancel</string>
+    <string name="set">Set</string>
+    <string name="watch_later">Watch later</string>
+    <string name="bad_watch_later">Set other date/time</string>
+    <string name="watch_later_notification">Watch the movie \"%s\"</string>
+    <string name="open_film">Open films</string>
+    <string name="notification_title">Notification</string>
 </resources>
