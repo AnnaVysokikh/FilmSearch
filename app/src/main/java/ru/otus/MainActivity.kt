@@ -7,21 +7,25 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.messaging.FirebaseMessaging
-import ru.otus.repositoty.FilmsRepository
 import ru.otus.view.DescriptionFragment
 import ru.otus.view.FavoriteFragment
 import ru.otus.view.FilmsFragment
 import ru.otus.viewmodel.FilmsViewModel
 import ru.otus.viewmodel.FilmsViewModelFactory
+import javax.inject.Inject
 
 open class MainActivity : AppCompatActivity() {
 
+    @Inject
+    lateinit var factory: FilmsViewModelFactory
     private lateinit var viewModel: FilmsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        viewModel = ViewModelProvider(this, FilmsViewModelFactory(FilmsRepository()))[FilmsViewModel::class.java]
+
+        App.appComponent.inject(this)
+        viewModel = ViewModelProvider(this, factory)[FilmsViewModel::class.java]
 
         initFirebaseToken()
 
@@ -43,15 +47,14 @@ open class MainActivity : AppCompatActivity() {
         navigation.setOnNavigationItemReselectedListener { true }
 
         if ((intent.action == NOTIFICATION_RECEIVER_ACTION ||
-                intent.getStringExtra("action") == "startDetails")
-        && savedInstanceState == null)    {
+                intent.getStringExtra("action") == "startDetails") && savedInstanceState == null)
+        {
             openAllFilms(savedInstanceState)
             viewModel.fragmentName = DETAILS
             var id = intent.getIntExtra(DescriptionFragment.EXTRA_FILM_ID, 0)
             if (id == 0)
                 id = intent.getStringExtra(DescriptionFragment.EXTRA_FILM_ID)?.toInt()!!
             viewModel.setSelectedFilm(id)
-            //viewModel.setSelectedFilm(intent.getStringExtra(DescriptionFragment.EXTRA_FILM_ID)?.toInt())
         }
 
         when (viewModel.fragmentName) {
@@ -61,7 +64,7 @@ open class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun openAllFilms(savedInstanceState: Bundle?) {
+    private fun openAllFilms(savedInstanceState: Bundle?) {
         viewModel.fragmentName = FILMS
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()

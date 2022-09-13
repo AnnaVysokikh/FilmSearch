@@ -9,14 +9,14 @@ import ru.otus.repositoty.FilmPages
 import ru.otus.repositoty.FilmsPageLoader
 
 class FilmsViewModel (
-    val filmsRepository: FilmsRepository,
+    private val filmsRepository: FilmsRepository,
     ) : ViewModel(){
 
     var fragmentName: String = FILMS
     private val mError = filmsRepository.repoError
     private val mSelectedFilm = MutableLiveData<FilmModel>()
     var highlightedFilms = MutableLiveData<Int>()
-
+    private var favorite = false
     val pagedFilms: LiveData<PagingData<FilmModel>>
         get() {
             val loader: FilmsPageLoader = { pageIndex, pageSize ->
@@ -69,12 +69,18 @@ class FilmsViewModel (
             filmsRepository.getFilm(id){mSelectedFilm.value = filmsRepository.getFilmFromDB(id)}
         }
     }
+
     fun onFavoriteChanged(id: Int){
         val changingFilm = filmsRepository.getFilmFromDB(id)
         if (changingFilm?.isFavorite != null) {
             changingFilm.isFavorite = !changingFilm.isFavorite!!
+            favorite = changingFilm.isFavorite!!
             filmsRepository.updateFilmInDB(changingFilm)
             filmsRepository.filmsSource.invalidate()
         }
+    }
+
+    fun getFavoriteChanged(): Boolean {
+        return favorite
     }
 }

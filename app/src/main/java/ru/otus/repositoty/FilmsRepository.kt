@@ -1,17 +1,17 @@
 package ru.otus.repositoty
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import io.reactivex.SingleObserver
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import ru.otus.App
 import ru.otus.model.FilmModel
+import javax.inject.Inject
 
-class FilmsRepository() {
+class FilmsRepository @Inject constructor(private val api: FilmApi, private val dao: PublisherDao) {
 
     lateinit var filmsSource: FilmPages
     val repoError = MutableLiveData<String>()
@@ -19,40 +19,50 @@ class FilmsRepository() {
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 
     suspend fun getFilms(pageIndex: Int, pageSize: Int): ArrayList<FilmModel>
-            = withContext(ioDispatcher) {
+    {
         val films = getFilmsFromDB(pageIndex, pageSize)
         if (films.size < 20) {
             getFilmsFromAPI(pageIndex, pageSize)
-            return@withContext getFilmsFromDB(pageIndex, pageSize)
+            return getFilmsFromDB(pageIndex, pageSize)
         }
-        else {
-            return@withContext films}
+        return films
     }
 
-    private suspend fun getFilmsFromAPI(pageIndex: Int, pageSize: Int)
-            = withContext(ioDispatcher) {
+    private fun getFilmsFromAPI(pageIndex: Int, pageSize: Int)
+    {
         val list = arrayListOf<FilmModel>()
 
-        try {
-            val response = App.instance.api.getFilms(TYPE_TOP, pageIndex)
-            response.films.forEachIndexed { i, model ->
-                list.add(
-                    FilmModel(
-                        (pageIndex - 1) * pageSize + i, model.id, model.name, model.poster)
-                )
-            }
-            DB.getDB(App.instance.applicationContext)?.getPublisherDao()?.insert(list)
-        } catch (e: Throwable){
-            repoError.postValue("Failed to get films from server: ${e.message}")
-        }
+        api.getFilms(TYPE_TOP, pageIndex)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                object : SingleObserver<FilmsResponse> {
+                    override fun onSubscribe(d: Disposable) {
+                    }
+
+                    override fun onSuccess(filmsResponse: FilmsResponse) {
+                        filmsResponse.films.forEachIndexed { i, model ->
+                            list.add(
+                                FilmModel(
+                                    (pageIndex - 1) * pageSize + i, model.id, model.name, model.poster)
+                            )
+                        }
+                        dao.insert(list)
+                    }
+
+                    override fun onError(e: Throwable) {
+                        repoError.postValue("Failed to get film from server: ${e.message}")
+                    }
+                }
+            )
     }
 
     private suspend fun getFilmsFromDB(pageIndex: Int, pageSize: Int): ArrayList<FilmModel>
             = withContext(ioDispatcher){
         val offset = (pageIndex - 1) * pageSize
         val DBList = arrayListOf<FilmModel>()
-        DB.getDB(App.instance.applicationContext)?.getPublisherDao()
-            ?.getFilms(pageSize, offset)?.forEach { model ->
+
+        dao.getFilms(pageSize, offset)?.forEach { model ->
                 DBList.add(FilmModel(
                     model.positionID,
                     model.id,
@@ -70,8 +80,9 @@ class FilmsRepository() {
             = withContext(ioDispatcher){
         val offset = (pageIndex - 1) * pageSize
         val DBlist = arrayListOf<FilmModel>()
-        DB.getDB(App.instance.applicationContext)?.getPublisherDao()
-            ?.getFavoriteFilms(pageSize, offset)?.forEach { model ->
+
+        dao.getFavoriteFilms(pageSize, offset)!!
+             .forEach { model ->
                 DBlist.add(FilmModel(
                     model.positionID,
                     model.id,
@@ -87,42 +98,44 @@ class FilmsRepository() {
     }
 
     fun getFilm(filmID: Int, onFilmReceivedListener: (FilmModel?) -> Unit){
-        onFilmReceivedListener.invoke(
-            getFilmFromDB(filmID)
-        )
-        App.instance.api.getFilm(filmID).enqueue(
-            object: Callback<FilmModel> {
-                override fun onResponse(call: Call<FilmModel>, response: Response<FilmModel>) {
-                    response.body()?.let {
-                        updateDescriptionIntoDB(it.id ,it.description)
+        onFilmReceivedListener.invoke(getFilmFromDB(filmID))
+
+        api.getFilm(filmID)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                object : SingleObserver<FilmModel> {
+                    override fun onSubscribe(d: Disposable) {
                     }
-                    onFilmReceivedListener.invoke(
-                        getFilmFromDB(filmID)
-                    )
+
+                    override fun onSuccess(t: FilmModel) {
+                        t.let {
+                            updateDescriptionIntoDB(it.id ,it.description)
+                        }
+                        onFilmReceivedListener.invoke(
+                            getFilmFromDB(filmID)
+                        )
+                    }
+
+                    override fun onError(e: Throwable) {
+                        repoError.postValue("Failed to get film from server: ${e.message}")
+                    }
                 }
-                override fun onFailure(call: Call<FilmModel>, t: Throwable) {
-                    repoError.postValue("Failed to get film from server: ${t.message}")
-                }
-            }
-        )
+            )
     }
 
     fun updateDescriptionIntoDB(filmID: Int, description: String?){
         if (description != null) {
-            DB.getDB(App.instance.applicationContext)?.getPublisherDao()
-                ?.updateFilmDescription(filmID.toString(), description)
+            dao.updateFilmDescription(filmID.toString(), description)
         }
     }
 
     fun updateFilmInDB(filmModel: FilmModel){
-        DB.getDB(App.instance.applicationContext)?.getPublisherDao()
-            ?.update(filmModel)
+        dao.update(filmModel)
     }
 
     fun getFilmFromDB(filmID: Int): FilmModel?{
-        val filmModel = DB.getDB(App.instance.applicationContext)?.getPublisherDao()
-            ?.getFilm(filmID.toString())
-        return filmModel
+        return dao.getFilm(filmID.toString())
     }
 
     companion object {

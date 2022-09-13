@@ -24,21 +24,23 @@ import ru.otus.*
 import ru.otus.model.FilmModel
 import ru.otus.viewmodel.FilmsViewModel
 import ru.otus.databinding.FragmentFilmsBinding
-import ru.otus.repositoty.FilmsRepository
 import ru.otus.viewmodel.FilmsViewModelFactory
 import ru.otus.MainActivity.Companion.FILMS
+import javax.inject.Inject
 
 open class FilmsFragment : Fragment() {
-
+    @Inject
+    lateinit var factory: FilmsViewModelFactory
     lateinit var viewModel: FilmsViewModel
     private lateinit var binding : FragmentFilmsBinding
-    lateinit var recyclerView: RecyclerView
+    private lateinit var recyclerView: RecyclerView
     private lateinit var loadStateHolder: LoadAdapter.Holder
     private lateinit var filmAdapter: FilmsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(requireActivity(), FilmsViewModelFactory(FilmsRepository()))[FilmsViewModel::class.java]
+        App.appComponent.inject(this)
+        viewModel = ViewModelProvider(requireActivity(), factory)[FilmsViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -131,7 +133,7 @@ open class FilmsFragment : Fragment() {
 
     open fun onFavoriteClick(id: Int){
         viewModel.onFavoriteChanged(id)
-        var message = if (viewModel.selectedFilm.value?.isFavorite ==true) R.string.add_favorite
+        val message = if (viewModel.getFavoriteChanged()) R.string.add_favorite
             else R.string.del_favorite
         Snackbar.make(binding.root,message, Snackbar.LENGTH_SHORT)
             .setAction(R.string.cancel) { viewModel.onFavoriteChanged(id) }

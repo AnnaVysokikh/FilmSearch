@@ -2,6 +2,7 @@ package ru.otus.repositoty
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import io.reactivex.Single
 import ru.otus.model.FilmModel
 
 @Dao

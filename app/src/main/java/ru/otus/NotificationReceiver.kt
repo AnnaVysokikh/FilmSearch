@@ -21,7 +21,6 @@ class NotificationReceiver: BroadcastReceiver() {
         Log.d("__OTUS__", "Watch later NotificationReceiver")
         context?.let { _context ->
             val film = intent?.getStringExtra(EXTRA_FILM_NAME)?:""
-         //   val filmID = intent?.getIntExtra(EXTRA_FILM_ID, 0)
             val intentNew = Intent(NOTIFICATION_RECEIVER_ACTION,null,context,MainActivity::class.java)
             intentNew.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             intentNew.putExtra(EXTRA_FILM_ID, intent?.action)

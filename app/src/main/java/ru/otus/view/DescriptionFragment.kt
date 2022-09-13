@@ -22,7 +22,6 @@ import com.google.android.material.timepicker.TimeFormat
 import ru.otus.MainActivity
 import ru.otus.NotificationReceiver
 import ru.otus.R
-import ru.otus.model.FilmModel
 import ru.otus.viewmodel.FilmsViewModel
 import java.util.*
 
@@ -77,8 +76,8 @@ class DescriptionFragment : Fragment() {
                 reminderDate.timeInMillis = date
                 reminderDate.set(Calendar.HOUR, timePicker.hour)
                 reminderDate.set(Calendar.MINUTE, timePicker.minute)
-                var name = viewModel.selectedFilm.value?.name
-                var id = viewModel.selectedFilm.value?.id
+                val name = viewModel.selectedFilm.value?.name
+                val id = viewModel.selectedFilm.value?.id
                 setNotification(requireContext(), reminderDate, name, id)
 
                 Log.d("__OTUS__", (
