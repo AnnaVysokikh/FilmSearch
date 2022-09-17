@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import ru.otus.model.FilmModel
+import ru.otus.presentation.model.FilmModel
 import java.util.concurrent.Executors
 
 @Database(entities = [FilmModel::class], version = 1)

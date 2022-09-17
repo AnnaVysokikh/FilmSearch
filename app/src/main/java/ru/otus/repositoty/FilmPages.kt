@@ -2,7 +2,7 @@ package ru.otus.repositoty
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import ru.otus.model.FilmModel
+import ru.otus.presentation.model.FilmModel
 import java.lang.Exception
 
 typealias FilmsPageLoader = suspend (pageIndex: Int, pageSize: Int) -> List<FilmModel>

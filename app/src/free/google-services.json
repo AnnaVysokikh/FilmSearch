@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "631579706747",
+    "project_id": "filmsearch-fd4a9",
+    "storage_bucket": "filmsearch-fd4a9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:631579706747:android:e272e9979c5e96f72fa9de",
+        "android_client_info": {
+          "package_name": "ru.otus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "631579706747-poi6ei9ef6d955oi16fk9evoslec8v46.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5PQ6JH88HvPLeQbxFKYLZjs6ooB-dIlc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "631579706747-poi6ei9ef6d955oi16fk9evoslec8v46.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:631579706747:android:acd0ed3eecebc1c02fa9de",
+        "android_client_info": {
+          "package_name": "ru.otus.free"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "631579706747-poi6ei9ef6d955oi16fk9evoslec8v46.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5PQ6JH88HvPLeQbxFKYLZjs6ooB-dIlc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "631579706747-poi6ei9ef6d955oi16fk9evoslec8v46.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -7,8 +7,8 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import ru.otus.repositoty.FilmApi
 import javax.inject.Singleton
+import ru.otus.repositoty.FilmApi
 
 @Module
 class NetworkModule {

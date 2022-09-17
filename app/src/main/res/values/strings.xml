@@ -1,6 +1,4 @@
 <resources>
-    <string name="app_name">FilmSearch</string>
-    <string name="title">Поиск фильмов</string>
     <string name="button_details">Детали</string>
     <string name="button_invite_friend">Пригласить друга</string>
     <string name="button_favorite">Избранное</string>

@@ -1,7 +1,7 @@
 package ru.otus.repositoty
 
 import com.google.gson.annotations.Expose
-import ru.otus.model.FilmModel
+import ru.otus.presentation.model.FilmModel
 
 data class FilmsResponse (
     @Expose

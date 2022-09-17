@@ -1,17 +1,17 @@
 package ru.otus.repositoty
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import ru.otus.model.FilmModel
+import ru.otus.presentation.model.FilmModel
 import javax.inject.Inject
 
-class FilmsRepository @Inject constructor(private val api: FilmApi, private val dao: PublisherDao) {
+class FilmsRepository @Inject constructor(private val api: FilmApi, val dao: PublisherDao) {
 
     lateinit var filmsSource: FilmPages
     val repoError = MutableLiveData<String>()
@@ -20,15 +20,16 @@ class FilmsRepository @Inject constructor(private val api: FilmApi, private val 
 
     suspend fun getFilms(pageIndex: Int, pageSize: Int): ArrayList<FilmModel>
     {
-        val films = getFilmsFromDB(pageIndex, pageSize)
+        var films = getFilmsFromDB(pageIndex, pageSize)
         if (films.size < 20) {
+          //  films =
             getFilmsFromAPI(pageIndex, pageSize)
             return getFilmsFromDB(pageIndex, pageSize)
         }
         return films
     }
-
-    private fun getFilmsFromAPI(pageIndex: Int, pageSize: Int)
+/*
+    fun getFilmsFromAPI(pageIndex: Int, pageSize: Int): ArrayList<FilmModel>
     {
         val list = arrayListOf<FilmModel>()
 
@@ -55,23 +56,44 @@ class FilmsRepository @Inject constructor(private val api: FilmApi, private val 
                     }
                 }
             )
+        return list
+    }*/
+
+    suspend fun getFilmsFromAPI(pageIndex: Int, pageSize: Int)
+            = withContext(ioDispatcher) {
+        val list = arrayListOf<FilmModel>()
+
+        try {
+            val response = api.getFilms(TYPE_TOP, pageIndex)
+            response.films.forEachIndexed { i, model ->
+                list.add(
+                    FilmModel(
+                        (pageIndex - 1) * pageSize + i, model.id, model.name, model.poster)
+                )
+            }
+            dao.insert(list)
+        } catch (e: Throwable){
+            repoError.postValue("Failed to get films from server: ${e.message}")
+            Log.d("__OTUS__", "Failed to get film from server: ${e.message}")
+        }
     }
 
-    private suspend fun getFilmsFromDB(pageIndex: Int, pageSize: Int): ArrayList<FilmModel>
+    suspend fun getFilmsFromDB(pageIndex: Int, pageSize: Int): ArrayList<FilmModel>
             = withContext(ioDispatcher){
         val offset = (pageIndex - 1) * pageSize
         val DBList = arrayListOf<FilmModel>()
 
         dao.getFilms(pageSize, offset)?.forEach { model ->
-                DBList.add(FilmModel(
+                DBList.add(
+                    FilmModel(
                     model.positionID,
                     model.id,
                     model.name,
                     model.poster,
                     model.description?:"",
-                    model.isFavorite?: false,
-                    model.watchLater?: -1
-                ))
+                    model.isFavorite?: false
+                )
+                )
             }
         return@withContext DBList
     }
@@ -83,46 +105,41 @@ class FilmsRepository @Inject constructor(private val api: FilmApi, private val 
 
         dao.getFavoriteFilms(pageSize, offset)!!
              .forEach { model ->
-                DBlist.add(FilmModel(
+                DBlist.add(
+                    FilmModel(
                     model.positionID,
                     model.id,
                     model.name,
                     model.poster,
                     model.description?:"",
-                    model.isFavorite?: false,
-                    model.watchLater?: -1
-                ))
+                    model.isFavorite?: false
+                )
+                )
             }
 
         return@withContext DBlist
     }
 
-    fun getFilm(filmID: Int, onFilmReceivedListener: (FilmModel?) -> Unit){
+    fun getFilm(filmID: Int, onFilmReceivedListener: (FilmModel?) -> Unit): Disposable{
         onFilmReceivedListener.invoke(getFilmFromDB(filmID))
 
-        api.getFilm(filmID)
+        val disposable: Disposable = api.getFilm(filmID)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                object : SingleObserver<FilmModel> {
-                    override fun onSubscribe(d: Disposable) {
-                    }
-
-                    override fun onSuccess(t: FilmModel) {
-                        t.let {
-                            updateDescriptionIntoDB(it.id ,it.description)
-                        }
-                        onFilmReceivedListener.invoke(
-                            getFilmFromDB(filmID)
-                        )
-                    }
-
-                    override fun onError(e: Throwable) {
-                        repoError.postValue("Failed to get film from server: ${e.message}")
-                    }
+                {
+                    updateDescriptionIntoDB(it.id, it.description)
+                    onFilmReceivedListener.invoke(getFilmFromDB(filmID))
+                },
+                { error ->
+                    repoError.postValue("Failed to get film from server: ${error.message}")
+                    Log.d("__OTUS__", "Failed to get film from server: ${error.message}")
                 }
+
             )
+        return disposable
     }
+
 
     fun updateDescriptionIntoDB(filmID: Int, description: String?){
         if (description != null) {
