@@ -4,6 +4,7 @@ import androidx.lifecycle.*
 import androidx.paging.*
 import ru.otus.repositoty.FilmsRepository
 import ru.otus.presentation.MainActivity.Companion.FILMS
+import ru.otus.presentation.SingleLiveEvent
 import ru.otus.presentation.model.FilmModel
 import ru.otus.repositoty.FilmPages
 import ru.otus.repositoty.FilmsPageLoader
@@ -57,7 +58,7 @@ class FilmsViewModel (
         highlightedFilms.value = -1
     }
     val selectedFilm: LiveData<FilmModel> = mSelectedFilm
-    val error: LiveData<String> = mError
+    val error: SingleLiveEvent<String> = mError
 
     fun onFilmClick(id: Int){
         highlightedFilms.value = id
@@ -66,7 +67,7 @@ class FilmsViewModel (
 
     fun setSelectedFilm(id: Int?){
         if (id != null){
-            filmsRepository.getFilm(id){mSelectedFilm.value = filmsRepository.getFilmFromDB(id)}
+            filmsRepository.getFilm(id){ mSelectedFilm.value = filmsRepository.getFilmFromDB(id) }
         }
     }
 

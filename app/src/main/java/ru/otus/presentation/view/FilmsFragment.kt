@@ -59,7 +59,7 @@ open class FilmsFragment : Fragment() {
         initRecycler()
 
         viewModel.error.observe(viewLifecycleOwner, Observer<String> { error ->
-            Snackbar.make(binding.root,error, Snackbar.LENGTH_INDEFINITE)
+            Snackbar.make(binding.root, error, Snackbar.LENGTH_INDEFINITE)
                 .setAction(R.string.try_again) { filmAdapter.refresh() }
                 .setAnimationMode(Snackbar.ANIMATION_MODE_FADE)
                 .show()
@@ -138,7 +138,7 @@ open class FilmsFragment : Fragment() {
         viewModel.onFavoriteChanged(id)
         val message = if (viewModel.getFavoriteChanged()) R.string.add_favorite
             else R.string.del_favorite
-        Snackbar.make(binding.root,message, Snackbar.LENGTH_SHORT)
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
             .setAction(R.string.cancel) { viewModel.onFavoriteChanged(id) }
             .setAnimationMode(Snackbar.ANIMATION_MODE_FADE)
             .show()

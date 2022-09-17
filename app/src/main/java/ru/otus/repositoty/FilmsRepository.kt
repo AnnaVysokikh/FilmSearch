@@ -8,13 +8,14 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import ru.otus.presentation.SingleLiveEvent
 import ru.otus.presentation.model.FilmModel
 import javax.inject.Inject
 
 class FilmsRepository @Inject constructor(private val api: FilmApi, val dao: PublisherDao) {
 
     lateinit var filmsSource: FilmPages
-    val repoError = MutableLiveData<String>()
+    val repoError = SingleLiveEvent<String>()
 
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 
@@ -22,7 +23,6 @@ class FilmsRepository @Inject constructor(private val api: FilmApi, val dao: Pub
     {
         var films = getFilmsFromDB(pageIndex, pageSize)
         if (films.size < 20) {
-          //  films =
             getFilmsFromAPI(pageIndex, pageSize)
             return getFilmsFromDB(pageIndex, pageSize)
         }
